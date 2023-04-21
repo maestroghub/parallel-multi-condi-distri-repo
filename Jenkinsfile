@@ -1,56 +1,43 @@
 pipeline{
-	agent{
-		label{
-			label 'slave2'
-		}
-	}
-	stages{
-	stage('version-control'){
-			steps{
-				checkout scmGit(branches: [[name: '(main|develop|feature.*)']], extensions: [], userRemoteConfigs: [[credentialsId: 'maestrog-id', url: 'https://github.com/maestroghub/multibranchrepo2.git']])
-			}
-		}
-		stage('system-resources-check'){
-			steps{
-				sh "lscpu"
-			}
-		}
-		stage('parallel-1-job'){
-			parallel{
-				stage('sub-job-1'){
-					steps{
-						sh 'uptime'
-					}
-				}
-			}
-		}
-		stage('codebuild'){
-            agent{
-                label{
-                    label 'slave1'
-                }
-            }
+  agent {
+    label {
+      label 'slave1'
+    }
+  }
+  stages{
+    stage('version-control'){
+      steps{
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-id', url: 'https://github.com/etechDevops/jenkins-parallel-job.git']]])
+      }
+    }
+    stage('parallel-job'){
+      parallel{
+        stage('sub-job1'){
+          steps{
+            echo 'action1'
+          }
+        }
+        stage('sub-job2'){
+          steps{
+            echo 'action2'
+          }
+        }
+        stage('sub-job3'){
             steps{
-                sh 'date'
-                sh 'cal'
+                echo 'action3'
             }
         }
-		stage('parallel-2-job'){
-			parallel{
-				stage('sub-job-2'){
-					steps{
-						sh 'cat /etc/passwd'
-					}
-				}
-			}
+      }
+    }
+    stage('codebuild'){
+      agent {
+        label {
+          label 'slave2'
         }
-		stage('conditional-build'){
-			when{
-				branch 'feature'
-			}
-			steps{
-				sh 'id ubuntu'
-			}
-        }
-	}
+      }
+      steps{
+        sh 'cat /etc/passwd'
+      }
+    }
+  }
 }
