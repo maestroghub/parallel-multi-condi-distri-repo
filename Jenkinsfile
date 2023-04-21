@@ -15,9 +15,9 @@ pipeline{
 				sh "lscpu"
 			}
 		}
-		stage('parallel-job'){
+		stage('parallel-1-job'){
 			parallel{
-				stage('sub-job1'){
+				stage('sub-job-1'){
 					steps{
 						sh 'uptime'
 					}
@@ -35,9 +35,9 @@ pipeline{
                 sh 'cal'
             }
         }
-		stage('parallel2-job'){
+		stage('parallel-2-job'){
 			parallel{
-				stage('sub-job2'){
+				stage('sub-job-2'){
 					steps{
 						sh 'cat /etc/passwd'
 					}
