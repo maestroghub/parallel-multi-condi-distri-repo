@@ -7,7 +7,7 @@ pipeline{
 	stages{
 	stage('version-control'){
 			steps{
-				checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-id', url: 'https://github.com/etechDevops/jenkins-parallel-job.git']]])
+				checkout scmGit(branches: [[name: '(main|develop|feature.*)']], extensions: [], userRemoteConfigs: [[credentialsId: 'maestrog-id', url: 'https://github.com/maestroghub/multibranchrepo2.git']])
 			}
 		}
 		stage('system-resources-check'){
