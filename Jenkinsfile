@@ -43,6 +43,7 @@ pipeline{
 					}
 				}
 			}
+        }
 		stage('conditional-build'){
 			when{
 				branch 'feature'
