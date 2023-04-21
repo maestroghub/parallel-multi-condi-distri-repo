@@ -15,7 +15,7 @@ pipeline{
 				sh "lscpu"
 			}
 		}
-		stage('parallel-job1'){
+		stage('parallel-job'){
 			parallel{
 				stage('sub-job1'){
 					steps{
