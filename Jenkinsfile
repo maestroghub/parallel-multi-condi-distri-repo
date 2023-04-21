@@ -22,10 +22,6 @@ pipeline{
 						sh 'uptime'
 					}
 				}
-				steps{
-						sh 'id jenkins'
-					}
-				}
 			}
 		}
 		stage('codebuild'){
@@ -39,9 +35,9 @@ pipeline{
                 sh 'cal'
             }
         }
-		stage('parallel-job2'){
+		stage('parallel2-job'){
 			parallel{
-				stage('sub-job3'){
+				stage('sub-job2'){
 					steps{
 						sh 'cat /etc/passwd'
 					}
