@@ -5,43 +5,41 @@ pipeline{
 		}
 	}
 	stages{
-		stage('1-version-control'){
+		stage('version-control'){
 			steps{
 				checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-id', url: 'https://github.com/etechDevops/jenkins-parallel-job.git']]])
 			}
 		}
-		stage('2-system-resources-check'){
+		stage('system-resources-check'){
 			steps{
 				sh "lscpu"
 			}
 		}
 		stage('parallel-job1'){
 			parallel{
-				stage('system-check'){
+				stage('sub-job1'){
 					steps{
 						sh 'uptime'
 					}
 				}
-				stage('jenkins-user-check'){
+				stage('sub-job2'){
 					steps{
 						sh 'id jenkins'
 					}
 				}
 			}
 		}
-		stage{
-			agent{
-				label{
-					label 'slave1'
-				}
-			}
+		stage('codebuild'){
+            agent{
+                label{
+                    label 'slave1'
+                }
+            }
+            steps{
+                sh 'date'
+                sh 'cal'
+            }
         }
-		stage{
-			steps{
-				sh 'date'
-				sh 'cal'
-			}
-		}
 		stage{
 			parallel{
 				stage('parallel-job2'){
