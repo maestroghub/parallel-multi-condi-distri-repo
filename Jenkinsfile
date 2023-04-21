@@ -40,22 +40,22 @@ pipeline{
                 sh 'cal'
             }
         }
-		stage{
+		stage('parallel-job2'){
 			parallel{
-				stage('parallel-job2'){
+				stage('sub-job3'){
 					steps{
 						sh 'cat /etc/passwd'
 					}
 				}
 			}
-		}
-		stage{
+        }
+		stage('conditional-build'){
 			when{
 				branch 'feature'
 			}
 			steps{
 				sh 'id ubuntu'
 			}
-		}
+        }
 	}
 }
